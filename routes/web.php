@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth'])->group(function () {
     Route::get('/', fn () => redirect(route('dashboard')));
     Route::get('/dashboard', fn () => view('dashboard'))->name('dashboard');
+    Route::get('/companies', fn () => view('companies'))->name('companies');
 });
 
 require __DIR__.'/auth.php';

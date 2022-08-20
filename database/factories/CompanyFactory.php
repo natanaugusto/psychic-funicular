@@ -21,7 +21,7 @@ class CompanyFactory extends Factory
         return [
             'creator_id' => User::factory(),
             'name' => $this->faker->company,
-            'doc_number' => $this->faker->cnpj,
+            'doc_number' => $this->faker->unique()->cnpj,
         ];
     }
 
