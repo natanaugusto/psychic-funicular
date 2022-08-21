@@ -46,6 +46,14 @@ class CompanyTable extends DataTableComponent
             Column::make(title:'Updated at', from:'updated_at')
                 ->sortable()
                 ->collapseOnMobile(),
+            Column::make(title:__(key:'Actions'), from:'id')
+                ->format(callable:static fn ($val) => view('components.action-buttons', ['id' => $val]))
+                ->collapseOnMobile(),
         ];
+    }
+
+    public function delete(Company $company): bool
+    {
+        return $company->delete();
     }
 }
