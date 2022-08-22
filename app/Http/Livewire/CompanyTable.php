@@ -47,7 +47,15 @@ class CompanyTable extends DataTableComponent
                 ->sortable()
                 ->collapseOnMobile(),
             Column::make(title:__(key:'Actions'), from:'id')
-                ->format(callable:static fn ($val) => view('components.action-buttons', ['id' => $val]))
+                ->format(callable:static fn ($val) => view('components.action-buttons', [
+                    'id' => $val,
+                    'confirmAction' => [
+                        self::class,
+                        'delete',
+                        $val,
+                        'refreshDatatable'
+                    ]
+                ]))
                 ->collapseOnMobile(),
         ];
     }
