@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Modals;
 
 use Illuminate\Contracts\View\View;
-use LivewireUI\Modal\ModalComponent;
 
-
-class FormModal extends ModalComponent
+class Form extends Modal
 {
     public $inputsView;
 

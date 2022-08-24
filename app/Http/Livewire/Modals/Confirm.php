@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Modals;
 
 use Illuminate\Contracts\View\View;
-use LivewireUI\Modal\ModalComponent;
 use Psy\Exception\TypeErrorException;
 use Livewire\Exceptions\PublicPropertyNotFoundException;
 
-class ConfirmModal extends ModalComponent
+class Confirm extends Modal
 {
     public const ACCEPTS_MODEL_AS = ['object', 'integer'];
     public $title;

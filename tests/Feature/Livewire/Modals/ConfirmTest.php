@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Livewire\CompanyTable;
-use App\Http\Livewire\ConfirmModal;
 use App\Models\Company;
+use App\Http\Livewire\CompanyTable;
+use App\Http\Livewire\Modals\Confirm;
 use Livewire\Testing\TestableLivewire;
 
 use function Pest\Faker\faker;
@@ -16,10 +16,10 @@ beforeEach(function () {
     ];
     /**
      * @var TestableLivewire $component
-     * @var ConfirmModal $instance
+     * @var Confirm $instance
      */
     extract(array:createLivewireComponentInstance(
-        name:ConfirmModal::class,
+        name:Confirm::class,
         params:$this->attrs
     ));
     $this->component = $component;

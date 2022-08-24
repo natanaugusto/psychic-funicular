@@ -1,14 +1,14 @@
 <?php
 
-use App\Http\Livewire\FormModal;
+use App\Http\Livewire\Modals\Form;
 
 beforeEach(function () {
     /**
      * @var TestableLivewire $component
-     * @var FormModal $instance
+     * @var Form $instance
      */
     extract(array:createLivewireComponentInstance(
-        name:FormModal::class,
+        name:Form::class,
         params:['inputsView' => 'companies.inputs']
     ));
     $this->component = $component;
