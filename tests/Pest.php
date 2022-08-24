@@ -48,11 +48,11 @@ function something()
     // ..
 }
 
-function createLivewireComponentInstance(string $name): array
+function createLivewireComponentInstance(string $name, array $params = []): array
 {
-    $component = Livewire::test($name);
+    $component = Livewire::test($name, $params);
     $component->assertHasNoErrors();
     $instance = $component->instance();
-    expect(value:$instance)->toBeInstanceOf(class :$name);
+    expect(value:$instance)->toBeInstanceOf(class:$name);
     return compact(var_name:['component', 'instance']);
 }

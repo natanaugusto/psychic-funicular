@@ -3,10 +3,9 @@
 namespace App\Http\Livewire;
 
 use Illuminate\Contracts\View\View;
-use Livewire\Exceptions\PublicPropertyNotFoundException;
-use Livewire\Livewire;
 use LivewireUI\Modal\ModalComponent;
 use Psy\Exception\TypeErrorException;
+use Livewire\Exceptions\PublicPropertyNotFoundException;
 
 class ConfirmModal extends ModalComponent
 {

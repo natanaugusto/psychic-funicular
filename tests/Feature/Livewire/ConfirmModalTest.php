@@ -18,14 +18,12 @@ beforeEach(function () {
      * @var TestableLivewire $component
      * @var ConfirmModal $instance
      */
-    extract(array:createLivewireComponentInstance(name:ConfirmModal::class));
+    extract(array:createLivewireComponentInstance(
+        name:ConfirmModal::class,
+        params:$this->attrs
+    ));
     $this->component = $component;
     $this->instance = $instance;
-
-    $this->component
-        ->set(name:'title', value:$this->attrs['title'])
-        ->set(name:'description', value:$this->attrs['description'])
-        ->set(name:'confirmBtnLabel', value:$this->attrs['confirmBtnLabel']);
 });
 
 it(description:'mount', closure:function () {
