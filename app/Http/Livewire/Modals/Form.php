@@ -10,6 +10,6 @@ class Form extends Modal
 
     public function render(): View
     {
-        return view('livewire.form-modal');
+        return view('livewire.modals.form');
     }
 }

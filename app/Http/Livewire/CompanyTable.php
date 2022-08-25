@@ -75,7 +75,7 @@ class CompanyTable extends DataTableComponent
             'deleteButtonParams' => $this->deleteButtonParams,
         ];
         /**
-         * @see \App\Http\Livewire\Modals\Confirm::$confirmAction[$class, $action, $model, $event]
+         * @see \App\Http\Livewire\Modals\Modal::$confirmAction[$class, $action, $model, $event]
          */
         $data['deleteButtonParams']['confirmAction'][2] = $id;
         $data['deleteButtonParams']['title'] = __($data['deleteButtonParams']['title']);

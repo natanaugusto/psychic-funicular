@@ -18,6 +18,6 @@ beforeEach(function () {
 
 it(description:'mount', closure:function () {
     $this->component
-        ->assertViewIs(name:'livewire.form-modal')
+        ->assertViewIs(name:'livewire.modals.form')
         ->assertOk();
 });

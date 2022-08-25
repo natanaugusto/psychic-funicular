@@ -28,7 +28,7 @@ beforeEach(function () {
 
 it(description:'mount', closure:function () {
     $this->component
-        ->assertViewIs(name:'livewire.confirm-modal')
+        ->assertViewIs(name:'livewire.modals.confirm')
         ->assertOk();
 
     foreach ($this->attrs as $val) {
