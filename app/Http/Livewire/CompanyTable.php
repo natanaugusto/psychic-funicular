@@ -54,7 +54,9 @@ class CompanyTable extends DataTableComponent
                         'delete',
                         $val,
                         'refreshDatatable'
-                    ]
+                    ],
+                    'confirmBtnLabel' => 'Delete',
+                    'confirmBtnColor' => 'red',
                 ]))
                 ->collapseOnMobile(),
         ];
