@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Company;
+use Illuminate\Contracts\View\View;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 
@@ -14,16 +15,25 @@ class CompanyTable extends DataTableComponent
         'default' => false,
         'class' => 'shadow border-b border-gray-200 dark:border-gray-700 sm:rounded-lg',
     ];
-    // public const CONFIGURABLE_AREAS_VIEWS = [
-    //     'toolbar-left-start' => 'tasks.create-button',
-    // ];
     protected $model = Company::class;
+    public $editButtonParams = ['inputsView' => 'companies.inputs'];
+    public $deleteButtonParams = [
+        'title' => 'Are you sure?',
+        'description' => 'Do you really sure that you want to exclude this register?',
+        'confirmAction' => [
+            self::class,
+            'delete',
+            null,
+            'refreshDatatable'
+        ],
+        'confirmBtnLabel' => 'Delete',
+        'confirmBtnColor' => 'red' ,
+    ];
 
     public function configure(): void
     {
         $this->setPrimaryKey('id');
         $this->setTableWrapperAttributes(attributes:self::TABLE_WRAPPER_ATTRS);
-        // $this->setConfigurableAreas(areas:self::CONFIGURABLE_AREAS_VIEWS);
         $this->setSearchDisabled();
         $this->setColumnSelectDisabled();
     }
@@ -47,23 +57,30 @@ class CompanyTable extends DataTableComponent
                 ->sortable()
                 ->collapseOnMobile(),
             Column::make(title:__(key:'Actions'), from:'id')
-                ->format(callable:static fn ($val) => view('components.action-buttons', [
-                    'id' => $val,
-                    'confirmAction' => [
-                        self::class,
-                        'delete',
-                        $val,
-                        'refreshDatatable'
-                    ],
-                    'confirmBtnLabel' => 'Delete',
-                    'confirmBtnColor' => 'red',
-                ]))
+                ->format(callable:fn ($val) => $this->actionButtonsParams(id:$val))
                 ->collapseOnMobile(),
-        ];
+            ];
     }
 
     public function delete(Company $company): bool
     {
         return $company->delete();
+    }
+
+    protected function actionButtonsParams(int $id): View
+    {
+        $data = [
+            'id' => $id,
+            'editButtonParams' => $this->editButtonParams,
+            'deleteButtonParams' => $this->deleteButtonParams,
+        ];
+        /**
+         * @see \App\Http\Livewire\Modals\Confirm::$confirmAction[$class, $action, $model, $event]
+         */
+        $data['deleteButtonParams']['confirmAction'][2] = $id;
+        $data['deleteButtonParams']['title'] = __($data['deleteButtonParams']['title']);
+        $data['deleteButtonParams']['description'] = __($data['deleteButtonParams']['description']);
+        $data['deleteButtonParams']['confirmBtnLabel'] = __($data['deleteButtonParams']['confirmBtnLabel']);
+        return view('components.action-buttons', $data);
     }
 }
