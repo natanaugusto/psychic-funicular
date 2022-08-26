@@ -12,6 +12,8 @@ class Company extends Model
     use HasFactory;
     use SoftDeletes;
 
+    protected $fillable = ['creator_id', 'name', 'doc_number'];
+
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i:s',
         'updated_at' => 'datetime:Y-m-d H:i:s',
