@@ -42,15 +42,16 @@ class Form extends Modal
                 if ((int)$model !== $this->model['id']) {
                     throw new CannotBindToModelDataWithoutValidationRuleException(key:$model, component:$this);
                 }
+                $model = $this->instance->getModel()::find($this->model['id']);
+                $model->fill(Arr::only(array:$this->model, keys:$model->getFillable()));
                 break;
             default:
-                throw new CannotBindToModelDataWithoutValidationRuleException(key:$model, component:$this);
-
+                $model = $this->model;
+                if (is_null($model->creator_id)) {
+                    $model->creator_id = auth()->user()->id;
+                }
                 break;
         }
-        $model = $this->instance->getModel()::find($this->model['id']);
-        $model->fill(Arr::only(array:$this->model, keys:$model->getFillable()));
-
         return $model;
     }
 }

@@ -25,7 +25,7 @@ it(description:'test mount', closure:function () {
 
     expect(value:$this->instance->getTableWrapperAttributes())
         ->toBe(expected:CompanyTable::TABLE_WRAPPER_ATTRS);
-    expect(value:$this->instance->getSearchStatus())->toBeFalse();
+    expect(value:$this->instance->getSearchStatus())->toBeTrue();
     expect(value:$this->instance->getColumnSelectStatus())->toBeFalse();
 });
 

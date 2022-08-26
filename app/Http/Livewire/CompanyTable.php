@@ -15,10 +15,17 @@ class CompanyTable extends DataTableComponent
         'default' => false,
         'class' => 'shadow border-b border-gray-200 dark:border-gray-700 sm:rounded-lg',
     ];
+    public const CONFIGURABLE_AREAS_VIEWS = [
+        'toolbar-left-start' => ['components.create-button', null],
+    ];
     protected $model = Company::class;
     public $editButtonParams = [
-        'model' => null,
+        'model' => Company::class,
         'inputsView' => 'companies.inputs',
+        'inputRules' => [
+            'model.name' => 'required|string',
+            'model.doc_number' => 'required|max:20'
+        ],
         'title' => 'Are you sure?',
         'confirmBtnLabel' => 'Update',
         'confirmBtnColor' => 'green',
@@ -44,10 +51,12 @@ class CompanyTable extends DataTableComponent
 
     public function configure(): void
     {
+        $areas = self::CONFIGURABLE_AREAS_VIEWS;
+        $areas['toolbar-left-start'][1]['editButtonParams'] = $this->editButtonParams;
         $this->setPrimaryKey('id');
-        $this->setTableWrapperAttributes(attributes:self::TABLE_WRAPPER_ATTRS);
-        $this->setSearchDisabled();
         $this->setColumnSelectDisabled();
+        $this->setConfigurableAreas($areas);
+        $this->setTableWrapperAttributes(attributes:self::TABLE_WRAPPER_ATTRS);
     }
 
     public function columns(): array
@@ -57,10 +66,13 @@ class CompanyTable extends DataTableComponent
                 ->sortable(),
             Column::make(title:__(key:'Creator'), from:'creator.name')
                 ->sortable()
+                ->searchable()
                 ->collapseOnMobile(),
             Column::make(title:__(key:'Name'), from:'name')
+                ->searchable()
                 ->sortable(),
             Column::make(title:__(key:'Document number'), from:'doc_number')
+                ->searchable()
                 ->sortable(),
             Column::make(title:__(key:'Created at'), from:'created_at')
                 ->sortable()
