@@ -6,7 +6,6 @@ ARG WWWGROUP
 
 WORKDIR /var/www/html
 
-ENV DEBIAN_FRONTEND noninteractive
 ENV TZ=UTC
 
 RUN echo "@community http://nl.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
@@ -51,8 +50,10 @@ RUN apk add --no-cache --update nodejs npm
 RUN apk add --no-cache --update mycli pgcli
 
 RUN setcap "cap_net_bind_service=+ep" /usr/bin/php81
-RUN groupadd --force -g $WWWGROUP sail
-RUN useradd -ms /bin/bash --no-user-group -g $WWWGROUP -u 1337 sail
+RUN if [[ -n "$WWWGROUP" ]]; then \
+    groupadd --force -g $WWWGROUP sail; \
+    useradd -ms /bin/bash --no-user-group -g $WWWGROUP -u 1337 sail \
+;fi
 
 COPY start-container /usr/local/bin/start-container
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
