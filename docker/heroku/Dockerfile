@@ -47,4 +47,9 @@ RUN apk add --no-cache --update \
 RUN apk add --no-cache --update nodejs npm
 RUN apk add --no-cache --update mycli pgcli
 
+COPY start-container /usr/local/bin/start-container
+RUN chmod +x /usr/local/bin/start-container
+
 EXPOSE 8000
+
+ENTRYPOINT ["start-container"]

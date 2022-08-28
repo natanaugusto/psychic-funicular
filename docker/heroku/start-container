@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+chmod -R ugo+rw /.composer
+
+composer install --verbose
+php artisan migrate
+npm install --verbose
+npm run build
