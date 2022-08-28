@@ -14,7 +14,7 @@ RUN echo "@testing http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/re
 RUN apk update --no-cache
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-RUN apk add --no-cache --update shadow libcap readline curl bash supervisor
+RUN apk add --no-cache --update shadow libcap readline curl bash supervisor gosu@testing
 RUN apk add --no-cache --update \
     php81 \
     php81-dev \
@@ -50,10 +50,9 @@ RUN apk add --no-cache --update nodejs npm
 RUN apk add --no-cache --update mycli pgcli
 
 RUN setcap "cap_net_bind_service=+ep" /usr/bin/php81
-RUN if [[ -n "$WWWGROUP" ]]; then \
-    groupadd --force -g $WWWGROUP sail; \
-    useradd -ms /bin/bash --no-user-group -g $WWWGROUP -u 1337 sail \
-;fi
+RUN echo ${WWWGROUP} $GROUP
+RUN groupadd --force -g $WWWGROUP sail \
+    && useradd -ms /bin/bash --no-user-group -g $WWWGROUP -u 1337 sail
 
 COPY start-container /usr/local/bin/start-container
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
