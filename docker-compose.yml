@@ -1,6 +1,19 @@
 # For more information: https://laravel.com/docs/sail
 version: '3'
 services:
+    heroku:
+        build:
+            context: ./docker/heroku
+            dockerfile: Dockerfile
+        image: heroku/app
+        ports:
+            - '${APP_PORT:-80}:80'
+        volumes:
+            - '.:/var/www/html'
+        networks:
+            - sail
+        depends_on:
+            - mariadb
     laravel.test:
         build:
             context: ./docker/alpine
