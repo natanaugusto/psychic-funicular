@@ -3,4 +3,3 @@ composer install --verbose
 php artisan migrate
 npm install --verbose
 npm run build
-exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
