@@ -1,64 +1,56 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Psychic Funicular
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This is just a CRUD example.
 
-## About Laravel
+## Running local
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+This project uses [Laravel Sail](https://laravel.com/docs/9.x/sail) which is a good and easy tool to deploy Laravel applications for development purposes.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+I create an [alpine/Dockerfile](docker/alpine/Dockerfile). The default docker image is an Ubuntu. But, I like the [Alpine](image) a little more when we talk about docker image containers.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### To consider
 
-## Learning Laravel
+We'll need to clone the [repository](https://github.com/natanaugusto/psychic-funicular) and after that, We'll run docker-compose and the other commands to run this project locally.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+(Certify if you have [docker](https://docs.docker.com/engine/install) and [docker-compose](https://docs.docker.com/compose/install/) correctly installed)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Let's start
+The fellow commands will clone, start and deploy a development instance for this project.
 
-## Laravel Sponsors
+```shell
+$ git clone https://github.com/natanaugusto/psychic-funicular
+$ cd psychic-funicular
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+$ cp .env.example .env
+$ sed -i 's/DB_HOST=127.0.0.1/DB_HOST=mariadb/g' .env
+$ sed -i 's/DB_USERNAME=root/DB_USERNAME=sail/g' .env
+$ sed -i 's/DB_PASSWORD=/DB_PASSWORD=password/g' .env
 
-### Premium Partners
+$ docker-compose up -d
+# If you get an error here, just try again one more time to be sure
+$ sudo chown $USER:$USER -R vendor
+$ docker-compose exec -u sail laravel.test composer install --verbose
+$ docker-compose down
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+$ sail build
+$ sail up -d
+$ sail artisan key:generate
+$ sail artisan migrate
+$ sail npm install --verbose
+$ sail npm run build
+```
+### Creating dummy data
+We'll use [Laravel Tinker](https://laravel.com/docs/9.x/artisan#tinker) to create fake data. This will create 200 companies on database.
 
-## Contributing
+```shell
+$ sail tinker
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Psy Shell v0.11.8 (PHP 8.1.9 — cli) by Justin Hileman
+>>> Company::factory(200)->create()
+```
+### If all goes right
 
-## Code of Conduct
+Our local instance is up and filled with dummy data.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- [Register a user](http://localhost/register)
+- [Login](http://localhost/register)
