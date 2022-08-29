@@ -12,12 +12,17 @@ RUN echo "@testing http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/re
 RUN apk update --no-cache
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-RUN apk add --no-cache --update shadow libcap readline curl bash supervisor
+RUN apk add --no-cache --update shadow libcap readline \
+    curl bash supervisor logrotate openssl nginx openrc@community \
+    vim
+
+RUN touch /var/log/messages
+
 RUN apk add --no-cache --update \
     php81 \
     php81-dev \
     php81-common \
-    php81-xdebug \
+    php81-fpm@community \
     php81-intl \
     php81-ldap \
     php81-redis \
@@ -43,15 +48,20 @@ RUN apk add --no-cache --update \
     php81-pecl-msgpack \
     php81-pecl-igbinary \
     && ln -s /usr/bin/php81 /usr/bin/php \
+    && ln -s /usr/bin/php-config81 /usr/bin/php-config \
+    && ln -s /usr/bin/phpize81 /usr/bin/phpize \
+    && ln -s /usr/sbin/php-fpm81 /usr/sbin/php-fpm \
     && php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer
 RUN apk add --no-cache --update nodejs npm
 RUN apk add --no-cache --update mycli pgcli
 
+RUN mkdir -p /etc/nginx/ssl
+COPY nginx.conf /etc/nginx/
 COPY ./ /var/www/html/
-COPY start-container /usr/local/bin/start-container
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-RUN chmod +x /usr/local/bin/start-container
+RUN chmod ugo+rw -R /var/www/html/storage
+COPY start-container.sh /usr/local/share/start-container.sh
+RUN chmod +x /usr/local/share/start-container.sh
 
-EXPOSE 8000
+EXPOSE 80
 
-ENTRYPOINT ["start-container"]
+ENTRYPOINT [ "/usr/local/share/start-container.sh" ]

@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-composer install --verbose
-php artisan migrate
-npm install --verbose
-npm run build
